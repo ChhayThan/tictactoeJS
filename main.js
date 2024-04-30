@@ -1,49 +1,109 @@
-// IIFE gameBoard
-const gameBoard = (() => {
-  let board = [
-    ["", "", ""],
-    ["", "", ""],
-    ["", "", ""],
-  ];
-  const addMove = (x, y, symbol) => {
-    if (board[x][y] === "") {
-      board[x][y] = symbol;
-    }
-  };
-  const getBoard = () => {
-    return board;
-  };
+// // IIFE gameBoard
+// const gameBoard = (() => {
+//   let board = [
+//     ["", "", ""],
+//     ["", "", ""],
+//     ["", "", ""],
+//   ];
+//   const addMove = (x, y, symbol) => {
+//     if (board[x][y] === "") {
+//       board[x][y] = symbol;
+//     }
+//   };
+//   const getBoard = () => {
+//     return board;
+//   };
 
-  const isFull = () => {
-    for (let i = 0; i < board.length; i++) {
-      for (let j = 0; j < board[i].length; j++) {
-        if (board[i][j] === "") {
-          return false;
-        }
-      }
-    }
-    return true;
-  };
+//   const resetBoard = () => {
+//     for (let i = 0; i < board.length; i++) {
+//       for (let j = 0; j < board[i].length; j++) {
+//         board[i][j] = "";
+//       }
+//     }
+//   };
 
-  const toString = () => {
-    let arrayString = "";
-    for (let i = 0; i < board.length; i++) {
-      for (let j = 0; j < board[i].length; j++) {
-        if (board[i][j] === "") {
-          arrayString += "_ ";
-        } else {
-          arrayString += board[i][j] + " ";
-        }
-      }
-      arrayString += "\n"; // Add a newline character after each row
-    }
-    return arrayString;
-  };
+//   const isFull = () => {
+//     for (let i = 0; i < board.length; i++) {
+//       for (let j = 0; j < board[i].length; j++) {
+//         if (board[i][j] === "") {
+//           return false;
+//         }
+//       }
+//     }
+//     return true;
+//   };
 
-  return { addMove, getBoard, isFull, toString };
-})();
+//   const toString = () => {
+//     let arrayString = "";
+//     for (let i = 0; i < board.length; i++) {
+//       for (let j = 0; j < board[i].length; j++) {
+//         if (board[i][j] === "") {
+//           arrayString += "_ ";
+//         } else {
+//           arrayString += board[i][j] + " ";
+//         }
+//       }
+//       arrayString += "\n"; // Add a newline character after each row
+//     }
+//     return arrayString;
+//   };
+
+//   return { addMove, getBoard, isFull, toString, resetBoard };
+// })();
 
 const gameController = (() => {
+  // IIFE gameBoard
+  const gameBoard = (() => {
+    let board = [
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+    ];
+    const addMove = (x, y, symbol) => {
+      if (board[x][y] === "") {
+        board[x][y] = symbol;
+      }
+    };
+    const getBoard = () => {
+      return board;
+    };
+
+    const resetBoard = () => {
+      for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+          board[i][j] = "";
+        }
+      }
+    };
+
+    const isFull = () => {
+      for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+          if (board[i][j] === "") {
+            return false;
+          }
+        }
+      }
+      return true;
+    };
+
+    const toString = () => {
+      let arrayString = "";
+      for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+          if (board[i][j] === "") {
+            arrayString += "_ ";
+          } else {
+            arrayString += board[i][j] + " ";
+          }
+        }
+        arrayString += "\n"; // Add a newline character after each row
+      }
+      console.log(arrayString);
+    };
+
+    return { addMove, getBoard, isFull, toString, resetBoard };
+  })();
   const players = [
     {
       id: "player1",
@@ -85,7 +145,10 @@ const gameController = (() => {
       currentPlayer = players[1];
     }
 
-    resetBoard();
+    console.log(`NEW GAME - Current player: ${getActivePlayer().symbol}`);
+
+    gameBoard.resetBoard();
+    gameController.display();
   };
   const checkWinner = () => {
     const board = gameBoard.getBoard();
@@ -130,8 +193,7 @@ const gameController = (() => {
 
   const playRound = (row, col) => {
     gameBoard.addMove(row, col, currentPlayer.symbol);
-    console.log(gameBoard.toString());
-
+    gameController.display();
     if (checkWinner().win) {
       currentPlayer.score++;
       games++;
@@ -147,20 +209,18 @@ const gameController = (() => {
     }
   };
 
-  const resetBoard = () => {
-    const board = gameBoard.getBoard();
-    for (let i = 0; i < board.length; i++) {
-      for (let j = 0; j < board[i].length; j++) {
-        gameBoard.addMove(i, j, "");
-      }
-    }
-  };
-
   const getBoard = () => {
     return gameBoard.getBoard();
   };
 
-  return { playRound, newGame, getPlayers, getActivePlayer, getBoard };
+  return {
+    playRound,
+    newGame,
+    getPlayers,
+    getActivePlayer,
+    getBoard,
+    display: gameBoard.toString,
+  };
 })();
 
 gameController.playRound(0, 1);
@@ -169,3 +229,5 @@ gameController.playRound(0, 0);
 gameController.playRound(1, 2);
 gameController.playRound(1, 1);
 gameController.playRound(2, 2);
+
+gameController.newGame();
