@@ -147,9 +147,11 @@ const gameController = (() => {
       console.log(
         `WINNER IS: Player ${currentPlayer.symbol} with a score of: ${currentPlayer.score} `
       );
+      gameController.newGame();
     } else if (checkWinner().tie) {
       games++;
       console.log(`TIE GAME!`);
+      gameController.newGame();
     } else {
       switchPlayer();
       turns++;
@@ -169,12 +171,3 @@ const gameController = (() => {
     display: gameBoard.toString,
   };
 })();
-
-gameController.playRound(0, 1);
-gameController.playRound(0, 2);
-gameController.playRound(0, 0);
-gameController.playRound(1, 2);
-gameController.playRound(1, 1);
-gameController.playRound(2, 2);
-
-gameController.newGame();

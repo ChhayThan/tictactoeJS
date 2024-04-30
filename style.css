@@ -3,3 +3,32 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+:root {
+  --main-bg-color: #dfd0b8;
+  --secondary-color: #948979;
+  --third-color: #3c5b6f;
+  --fourth-color: #153448;
+}
+
+body {
+  background-color: var(--main-bg-color);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+}
+
+header {
+  color: var(--secondary-color);
+  font-size: large;
+  margin: 20px;
+  padding: 10px;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+}
