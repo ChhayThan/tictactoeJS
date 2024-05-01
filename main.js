@@ -46,7 +46,6 @@ const gameController = (() => {
         }
         arrayString += "\n"; // Add a newline character after each row
       }
-      console.log(arrayString);
     };
 
     return { addMove, getBoard, isFull, toString, resetBoard };
@@ -94,8 +93,6 @@ const gameController = (() => {
       currentPlayer = players[1];
     }
 
-    console.log(`NEW GAME - Current player: ${getActivePlayer().symbol}`);
-
     gameBoard.resetBoard();
     gameController.display();
   };
@@ -131,12 +128,10 @@ const gameController = (() => {
       diagonalToCheckTwo.every((item) => item === currentPlayer.symbol)
     ) {
       result.win = true;
-      gameStatus = "win";
     }
 
     if (gameBoard.isFull() && !result.win) {
       result.tie = true;
-      gameStatus = "tie";
     }
 
     return result;
@@ -148,12 +143,10 @@ const gameController = (() => {
     if (checkWinner().win) {
       currentPlayer.score++;
       games++;
-      console.log(
-        `WINNER IS: Player ${currentPlayer.symbol} with a score of: ${currentPlayer.score} `
-      );
+      gameStatus = "win";
     } else if (checkWinner().tie) {
       games++;
-      console.log(`TIE GAME!`);
+      gameStatus = "tie";
     } else {
       switchPlayer();
       turns++;
@@ -222,8 +215,6 @@ function renderGame() {
     const cellClicked = event.target;
     const rowClicked = cellClicked.dataset.row;
     const colClicked = cellClicked.dataset.column;
-
-    console.log({ rowClicked, colClicked });
 
     if (
       rowClicked !== undefined &&
